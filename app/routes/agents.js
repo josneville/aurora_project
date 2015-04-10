@@ -1,6 +1,4 @@
-var config = JSON.parse(process.env.config);
 var GF = require('./globalFunctions');
-
 var Agent = require('../models/agent');
 
 module.exports = {
@@ -56,7 +54,23 @@ module.exports = {
 		});
 	},
 	fromAgent: function(req, res, next){
+		Agent.get(req.body.event.fromAgent, function(err, agent){
+			if(err){
+				GF.error(res, 400, err, "FromAgent does not exist");
+				return;
+			}
+			res.locals.fromAgent = agent;
+			return next();
+		});
 	},
 	toAgent: function(req, res, next){
+		Agent.get(req.body.event.toAgent, function(err, agent){
+			if(err){
+				GF.error(res, 400, err, "ToAgent does not Exist");
+				return;
+			}
+			res.locals.toAgent = agent;
+			return next();
+		});
 	}
 }

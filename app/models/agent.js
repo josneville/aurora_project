@@ -22,6 +22,9 @@ Object.defineProperty(Agent.prototype, 'id', {
 Object.defineProperty(Agent.prototype, 'worth', {
     get: function () {
         return this._node.data['worth'];
+    },
+    set: function(worth) {
+      this._node.data['worth'] = worth;
     }
 });
 
@@ -47,20 +50,15 @@ Agent.prototype.save = function (callback) {
 
 Agent.prototype.del = function (callback) {
     // use a Cypher query to delete both this agent and his/her following
-    // relationships in one transaction and one network request:
-    // (note that this'll still fail if there are any relationships attached
-    // of any other types, which is good because we don't expect any.)
+    // relationships in one transaction and one network request.
     var query = [
-        'MATCH (agent:Agent)',
-        'WHERE ID(agent) = {userId}',
-        'DELETE agent',
-        'WITH agent',
-        'MATCH (agent) -[rel:*]- (other)',
-        'DELETE rel',
+        'MATCH (agent:Agent)-[r]-()',
+        'WHERE NAME(agent) = {name}',
+        'DELETE agent, r'
     ].join('\n')
 
     var params = {
-        userId: this.id
+        name: this.name
     };
 
     db.query(query, params, function (err) {
@@ -68,12 +66,42 @@ Agent.prototype.del = function (callback) {
     });
 };
 
-// static methods:
+Agent.createEvent = function (a, b, amount, relType, callback){
+    var query = [
+      'MATCH (a:Agent), (b:Agent)',
+      'WHERE a.name = {aName} AND b.name = {bName}',
+      'CREATE (a)-[r:'+relType+' {amount: {amount}}]->(b)',
+      'return r'
+    ].join('\n');
 
-Agent.get = function (id, callback) {
-    db.getNodeById(id, function (err, node) {
+    var params = {
+      aName: a.name,
+      bName: b.name,
+      amount: amount
+    };
+
+    db.query(query, params, function (err, results) {
+        if (err){
+          return callback(err, null);
+        }
+        callback(null, null);
+    });
+}
+
+// static methods
+
+Agent.get = function (name, callback) {
+    var query = [
+      'MATCH (agent:Agent)',
+      'WHERE agent.name = {name}',
+      'RETURN agent'
+    ].join('\n');
+    var params = {
+      name: name
+    }
+    db.query(query, params, function (err, results) {
         if (err) return callback(err);
-        callback(null, new Agent(node));
+        callback(null, new Agent(results[0]['agent']));
     });
 };
 
@@ -85,23 +113,15 @@ Agent.getAll = function (callback) {
 
     db.query(query, null, function (err, results) {
         if (err) return callback(err);
-        var users = results.map(function (result) {
+        var agents = results.map(function (result) {
             return new Agent(result['agent']);
         });
-        callback(null, users);
+        callback(null, agents);
     });
 };
 
 // creates the agent and persists (saves) it to the db, incl. indexing it:
 Agent.create = function (data, callback) {
-    // construct a new instance of our class with the data, so it can
-    // validate and extend it, etc., if we choose to do that in the future:
-    var node = db.createNode(data);
-    //var agent = new Agent(node);
-
-    // but we do the actual persisting with a Cypher query, so we can also
-    // apply a label at the same time. (the save() method doesn't support
-    // that, since it uses Neo4j's REST API, which doesn't support that.)
     var query = [
         'CREATE (agent:Agent {data})',
         'RETURN agent',
@@ -119,9 +139,6 @@ Agent.create = function (data, callback) {
 };
 
 Agent.createMultiple = function (data, callback) {
-    // but we do the actual persisting with a Cypher query, so we can also
-    // apply a label at the same time. (the save() method doesn't support
-    // that, since it uses Neo4j's REST API, which doesn't support that.)
     var query = [
         'CREATE (agent:Agent {data})',
         'RETURN agent',
@@ -130,10 +147,11 @@ Agent.createMultiple = function (data, callback) {
     var params = {
         data: data
     };
-
     db.query(query, params, function (err, results) {
         if (err) return callback(err);
-        var agent = new Agent(results[0]['agent']);
-        callback(null, agent);
+        var agents = results.map(function (result) {
+            return new Agent(result['agent']);
+        });
+        callback(null, agents);
     });
 };
