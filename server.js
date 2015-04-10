@@ -1,10 +1,11 @@
 //Initialize server framework
 var express = require('express');
 var app = express();
+var server = require('http').createServer(app);
+var io = require('socket.io')(server);
 
 var morgan = require('morgan'); //Used for logging server requests and responses
 var bodyParser = require('body-parser'); //Used for parsing requests
-var socket = require('socket.io'); //Used for having real-time data connection between website and server
 
 // Run morgan and bodyParser on all incoming routes
 app.use(morgan('dev'));
@@ -21,8 +22,8 @@ process.env.config = JSON.stringify(config);
 app.use(express.static("public"));
 
 // Use routing table for all incoming routes
-require('./app/routes/index')(app);
+require('./app/routes/index')(app, io);
 
 var port = process.env.PORT || 5000; //Either heroku will provide a port or use 5000
-app.listen(port); //Run server
+server.listen(port); //Run server
 console.log("Server running on port: " + port);

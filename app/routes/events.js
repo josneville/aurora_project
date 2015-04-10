@@ -2,11 +2,12 @@ var GF = require('./globalFunctions');
 var Agent = require('../models/agent');
 
 module.exports = {
-	new: function(req, res){
+	new: function(req, res, next){
 		var fromAgent = res.locals.fromAgent;
 		var toAgent = res.locals.toAgent;
 		var amount = req.body.event.amount;
 		var eventType = req.body.event.eventType;
+		var dateTime = req.body.dateTime;
 		switch (eventType) {
 			case "purchase":
 				if (fromAgent.agentType != "person" || toAgent.agentType != "store"){
@@ -49,7 +50,11 @@ module.exports = {
 				return;
 				break;
 		}
-		Agent.createEvent(fromAgent, toAgent, amount, eventType, function(err, result){
+		if (fromAgent.worth - amount < 0){
+			GF.error(res, 400, "", "Insufficient Funds");
+			return;
+		}
+		Agent.createEvent(fromAgent, toAgent, amount, eventType, dateTime, function(err, result){
 			if(err){
 				GF.error(res, 400, err, "Unknown error");
 				return;
@@ -67,6 +72,7 @@ module.exports = {
 						return;
 					}
 					res.status(200).send({message: "Successfully added event"});
+					return next();
 				})
 			})
 		});

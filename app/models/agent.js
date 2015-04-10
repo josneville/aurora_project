@@ -66,18 +66,19 @@ Agent.prototype.del = function (callback) {
     });
 };
 
-Agent.createEvent = function (a, b, amount, relType, callback){
+Agent.createEvent = function (a, b, amount, relType, dateTime, callback){
     var query = [
       'MATCH (a:Agent), (b:Agent)',
       'WHERE a.name = {aName} AND b.name = {bName}',
-      'CREATE (a)-[r:'+relType+' {amount: {amount}}]->(b)',
+      'CREATE (a)-[r:'+relType+' {amount: {amount}, dateTime: {dateTime}}]->(b)',
       'return r'
     ].join('\n');
 
     var params = {
       aName: a.name,
       bName: b.name,
-      amount: amount
+      amount: amount,
+      dateTime: dateTime
     };
 
     db.query(query, params, function (err, results) {
@@ -105,18 +106,29 @@ Agent.get = function (name, callback) {
     });
 };
 
-Agent.getAll = function (callback) {
+Agent.getAllConnected = function (callback) {
     var query = [
-        'MATCH (agent:Agent)',
-        'RETURN agent',
+        'START n=node(*)',
+        'MATCH (n)-[r]->(m)',
+        'RETURN n,r,m'
     ].join('\n');
 
     db.query(query, null, function (err, results) {
         if (err) return callback(err);
-        var agents = results.map(function (result) {
-            return new Agent(result['agent']);
-        });
-        callback(null, agents);
+        callback(null, results);
+    });
+};
+
+Agent.getAllSingle = function (callback) {
+    var query = [
+        'MATCH n',
+        'WHERE NOT n--()',
+        'RETURN n'
+    ].join('\n');
+
+    db.query(query, null, function (err, results) {
+        if (err) return callback(err);
+        callback(null, results);
     });
 };
 

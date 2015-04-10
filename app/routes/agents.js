@@ -2,7 +2,7 @@ var GF = require('./globalFunctions');
 var Agent = require('../models/agent');
 
 module.exports = {
-	new: function(req, res){
+	new: function(req, res, next){
 		var postAgent = req.body.agent;
 		if (GF.checkEmptyObject(postAgent)){
 			GF.error(res, 400, "", "No agent provided");
@@ -22,9 +22,10 @@ module.exports = {
 					return;
 				}
         res.status(200).send({message: "Agent added successfully"});
+				return next();
     });
 	},
-	multiple: function(req, res){
+	multiple: function(req, res, next){
 		var postAgents = req.body.agents;
 		if (postAgents.isArray && postAgents.length == 0){
 			GF.error(res, 400, "", "Cannot send empty array");
@@ -51,6 +52,7 @@ module.exports = {
 					return;
 				}
 				res.status(200).send({message: "Agents added"});
+				return next();
 		});
 	},
 	fromAgent: function(req, res, next){
