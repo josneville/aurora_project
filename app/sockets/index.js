@@ -18,7 +18,8 @@ module.exports = function(io){
                 target: rLinks[i].m._data.data.name,
                 tw: rLinks[i].m._data.data.worth,
                 type: rLinks[i].r._data.metadata.type,
-                amount: rLinks[i].r._data.data.amount
+                amount: rLinks[i].r._data.data.amount,
+                dateTime: rLinks[i].r._data.data.dateTime
               });
             }
             socket.emit('data', {links: links, nodes: nodes});
@@ -41,7 +42,8 @@ module.exports = function(io){
               target: rLinks[i].m._data.data.name,
               tw: rLinks[i].m._data.data.worth,
               type: rLinks[i].r._data.metadata.type,
-              amount: rLinks[i].r._data.data.amount
+              amount: rLinks[i].r._data.data.amount,
+              dateTime: rLinks[i].r._data.data.dateTime
             });
           }
           io.emit('data', {links: links, nodes: nodes});

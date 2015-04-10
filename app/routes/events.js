@@ -7,7 +7,7 @@ module.exports = {
 		var toAgent = res.locals.toAgent;
 		var amount = req.body.event.amount;
 		var eventType = req.body.event.eventType;
-		var dateTime = req.body.dateTime;
+		var dateTime = req.body.event.dateTime;
 		switch (eventType) {
 			case "purchase":
 				if (fromAgent.agentType != "person" || toAgent.agentType != "store"){
