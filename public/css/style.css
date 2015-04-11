@@ -35,19 +35,19 @@ circle {
   stroke-width: 1.5px;
 }
 
-circle .bank {
+circle.bank {
   fill: #7f8c8d;
   stroke: #7f8c8d;
   stroke-width: 1.5px;
 }
 
-circle .person {
+circle.person {
   fill: #2c3e50;
   stroke: #2c3e50;
   stroke-width: 1.5px;
 }
 
-circle .store {
+circle.store {
   fill: #ecf0f1;
   stroke: #ecf0f1;
   stroke-width: 1.5px;

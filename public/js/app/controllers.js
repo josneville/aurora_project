@@ -49,14 +49,14 @@ app.controller("main-controller", function($scope, socket){
 
     var path = svg.append("g").selectAll("path")
         .data(force.links())
-      .enter().append("path")
+        .enter().append("path")
         .attr("class", function(d) { return "link " + d.type; })
         .attr("marker-end", function(d) { return "url(#" + d.type + ")"; });
 
     var circle = svg.append("g").selectAll("circle")
         .data(force.nodes())
-      .enter().append("circle")
-      .attr("class", function(d) { return d.agentType; })
+        .enter().append("circle")
+        .attr("class", function(d) { return d.agentType; })
         .attr("r", 8)
         .call(force.drag);
 
