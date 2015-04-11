@@ -12,7 +12,7 @@ app.controller("main-controller", function($scope, $compile, socket){
     $scope.from = "From: " + s;
     $scope.to = "To: " + t;
     $scope.amount = "Amount: " + a;
-    $scope.type = "Type: " + ty.charAt(0).toUpperCase() + ty.slice(1);;
+    $scope.type = "Type: " + ty.charAt(0).toUpperCase() + ty.slice(1).replace(/([a-z])([A-Z])/g, '$1 $2');
     $scope.worth = "";
     $scope.name = "";
     $scope.infoClass = ty;
@@ -21,7 +21,7 @@ app.controller("main-controller", function($scope, $compile, socket){
     $scope.from = "";
     $scope.to = "";
     $scope.amount = "";
-    $scope.type = "Type: " + ty.charAt(0).toUpperCase() + ty.slice(1);;
+    $scope.type = "Type: " + ty.charAt(0).toUpperCase() + ty.slice(1).replace(/([a-z])([A-Z])/g, '$1 $2');
     $scope.worth = "Worth: " + w;
     $scope.name = "Name: " + n;
     $scope.infoClass = ty;
