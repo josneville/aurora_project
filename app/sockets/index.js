@@ -7,7 +7,7 @@ module.exports = function(io){
         Agent.getAllSingle(function(err, rNodes){
           nodes = [];
           for (var i = 0; i < rNodes.length; i++){
-            nodes.push({name: rNodes[i].n._data.data.name, worth: rNodes[i].n._data.data.amount});
+            nodes.push({name: rNodes[i].n._data.data.name, agentType: rNodes[i].n._data.data.agentType, worth: rNodes[i].n._data.data.amount});
           }
           Agent.getAllConnected(function(err, rLinks){
             links = [];
@@ -15,8 +15,10 @@ module.exports = function(io){
               links.push({
                 source: rLinks[i].n._data.data.name,
                 sw: rLinks[i].n._data.data.worth,
+                sa: rLinks[i].n._data.data.agentType,
                 target: rLinks[i].m._data.data.name,
                 tw: rLinks[i].m._data.data.worth,
+                ta: rLinks[i].m._data.data.agentType,
                 type: rLinks[i].r._data.metadata.type,
                 amount: rLinks[i].r._data.data.amount,
                 dateTime: rLinks[i].r._data.data.dateTime
@@ -39,8 +41,10 @@ module.exports = function(io){
             links.push({
               source: rLinks[i].n._data.data.name,
               sw: rLinks[i].n._data.data.worth,
+              sa: rLinks[i].n._data.data.agentType,
               target: rLinks[i].m._data.data.name,
               tw: rLinks[i].m._data.data.worth,
+              ta: rLinks[i].m._data.data.agentType,
               type: rLinks[i].r._data.metadata.type,
               amount: rLinks[i].r._data.data.amount,
               dateTime: rLinks[i].r._data.data.dateTime

@@ -12,8 +12,8 @@ app.controller("main-controller", function($scope, socket){
     var links = $scope.links;
     var nodes = $scope.nodes;
     links.forEach(function(link) {
-      link.source = nodes[link.source] || (nodes[link.source] = {name: link.source});
-      link.target = nodes[link.target] || (nodes[link.target] = {name: link.target});
+      link.source = nodes[link.source] || (nodes[link.source] = {name: link.source, agentType: link.sa, worth: link.sw});
+      link.target = nodes[link.target] || (nodes[link.target] = {name: link.target, agentType: link.ta, worth: link.tw});
     });
 
     var width = window.innerWidth,
@@ -56,6 +56,7 @@ app.controller("main-controller", function($scope, socket){
     var circle = svg.append("g").selectAll("circle")
         .data(force.nodes())
       .enter().append("circle")
+      .attr("class", function(d) { return d.agentType; })
         .attr("r", 8)
         .call(force.drag);
 

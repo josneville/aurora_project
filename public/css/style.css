@@ -18,7 +18,7 @@
 }
 
 .link.personalLoanPayment {
-  stroke: #e67e22;
+  stroke: #f1c40f;
 }
 
 .link.businessLoan {
@@ -32,6 +32,24 @@
 circle {
   fill: #2c3e50;
   stroke: #2c3e50;
+  stroke-width: 1.5px;
+}
+
+circle .bank {
+  fill: #7f8c8d;
+  stroke: #7f8c8d;
+  stroke-width: 1.5px;
+}
+
+circle .person {
+  fill: #2c3e50;
+  stroke: #2c3e50;
+  stroke-width: 1.5px;
+}
+
+circle .store {
+  fill: #ecf0f1;
+  stroke: #ecf0f1;
   stroke-width: 1.5px;
 }
 
