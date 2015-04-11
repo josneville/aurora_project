@@ -2,14 +2,20 @@
 <html ng-app="aurora">
   <meta charset="utf-8">
   <head>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/flat-ui.css">
     <link rel="stylesheet" href="/css/style.css">
     <link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
   </head>
   <body ng-controller="main-controller">
     <div id="legend">
+      <h1>Legend</h1>
+      <h2>Agents</h2>
       <p class="person">Person</p>
       <p class="store">Store</p>
       <p class="bank">Bank</p>
+
+      <h2>Events</h2>
       <p class="purchase">Purchase</p>
       <p class="refund">Refund</p>
       <p class="personalLoan">Personal Loan</p>
@@ -17,6 +23,11 @@
       <p class="businessLoan">Business Loan</p>
       <p class="businessLoanPayment">Business Loan Payment</p>
     </div>
+    <div class="col-xs-6 col-xs-offset-3" style="margin-top: 5px;">
+          <div class="form-group">
+            <input type="text" value="" placeholder="Search for agent" ng-model="query" class="form-control" ng-enter="search()">
+          </div>
+        </div>
     <div id="info">
       <p ng-class="infoClass">{{from}}</p>
       <p ng-class="infoClass">{{to}}</p>
@@ -31,6 +42,7 @@
     <script src="/js/d3.v3.min.js"></script>
     <script src="/js/app/app.js"></script>
     <script src="/js/app/controllers.js"></script>
+    <script src="/js/app/directives.js"></script>
     <script src="/js/app/services.js"></script>
   </body>
 </html>

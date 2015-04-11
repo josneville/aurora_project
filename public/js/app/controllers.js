@@ -3,11 +3,14 @@ var app = angular.module("aurora-controllers", []);
 app.controller("main-controller", function($scope, $compile, socket){
   $scope.nodes = [];
   $scope.links = [];
-  socket.on('data', function(data){
-    $scope.nodes = data.nodes;
-    $scope.links = data.links;
+  socket.on('graph', function(graph){
+    $scope.nodes = graph.nodes;
+    $scope.links = graph.links;
     $scope.renderGraph();
   });
+  $scope.search = function(){
+    $scope.renderGraph();
+  }
   $scope.updateRelInfo = function (s, t, ty, a){
     $scope.from = "From: " + s;
     $scope.to = "To: " + t;
@@ -27,8 +30,8 @@ app.controller("main-controller", function($scope, $compile, socket){
     $scope.infoClass = ty;
   };
   $scope.renderGraph = function(){
-    var links = $scope.links;
-    var nodes = $scope.nodes;
+    var links = angular.copy($scope.links);
+    var nodes = angular.copy($scope.nodes);
     links.forEach(function(link) {
       link.source = nodes[link.source] || (nodes[link.source] = {name: link.source, agentType: link.sa, worth: link.sw});
       link.target = nodes[link.target] || (nodes[link.target] = {name: link.target, agentType: link.ta, worth: link.tw});
@@ -68,6 +71,17 @@ app.controller("main-controller", function($scope, $compile, socket){
     var path = svg.append("g").selectAll("path")
         .data(force.links())
         .enter().append("path")
+        .filter(function(d){
+          if ($scope.query){
+            if (d.source.name.toLowerCase().indexOf($scope.query.toLowerCase()) > -1 || d.target.name.toLowerCase().indexOf($scope.query.toLowerCase()) > -1){
+              nodes[d.source.name].valid = true;
+              nodes[d.target.name].valid = true;
+              return true;
+            }
+            return false;
+          }
+          return true;
+        })
         .attr("class", function(d) { return "link " + d.type; })
         .attr("ng-mouseover", function(d){ return "updateRelInfo('"+d.source.name+"', '"+d.target.name+"', '"+d.type+"', "+d.amount+")"})
         .attr("marker-end", function(d) { return "url(#" + d.type + ")"; });
@@ -75,6 +89,15 @@ app.controller("main-controller", function($scope, $compile, socket){
     var circle = svg.append("g").selectAll("circle")
         .data(force.nodes())
         .enter().append("circle")
+        .filter(function(d){
+          if ($scope.query){
+            if (d.name.toLowerCase().indexOf($scope.query.toLowerCase()) > -1 || d.valid){
+              return true;
+            }
+            return false;
+          }
+          return true;
+        })
         .attr("class", function(d) { return d.agentType; })
         .attr("ng-mouseover", function(d){ return "updateNodeInfo('"+d.name+"', "+d.worth+", '"+d.agentType+"')"})
         .attr("r", 8)
@@ -82,7 +105,16 @@ app.controller("main-controller", function($scope, $compile, socket){
 
     var text = svg.append("g").selectAll("text")
         .data(force.nodes())
-      .enter().append("text")
+        .enter().append("text")
+        .filter(function(d){
+          if ($scope.query){
+            if (d.name.toLowerCase().indexOf($scope.query.toLowerCase()) > -1 || d.valid){
+              return true;
+            }
+            return false;
+          }
+          return true;
+        })
         .attr("x", 8)
         .attr("y", ".75em")
         .text(function(d) { return d.name; });

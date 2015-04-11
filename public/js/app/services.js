@@ -6,9 +6,9 @@ app.factory('socket', function ($rootScope) {
     on: function (eventName, callback) {
       socket.on(eventName, function () {
         var args = arguments;
-        $rootScope.$apply(function () {
+        //$rootScope.$apply(function () {
           callback.apply(socket, args);
-        });
+        //});
       });
     },
     emit: function (eventName, data, callback) {

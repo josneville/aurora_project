@@ -24,7 +24,7 @@ module.exports = function(io){
                 dateTime: rLinks[i].r._data.data.dateTime
               });
             }
-            socket.emit('data', {links: links, nodes: nodes});
+            socket.emit('graph', {links: links, nodes: nodes});
           })
         });
       });
@@ -50,7 +50,7 @@ module.exports = function(io){
               dateTime: rLinks[i].r._data.data.dateTime
             });
           }
-          io.emit('data', {links: links, nodes: nodes});
+          io.emit('graph', {links: links, nodes: nodes});
         })
       });
     }
