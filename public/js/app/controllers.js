@@ -43,7 +43,7 @@ app.controller("main-controller", function($scope, $compile, socket){
         .nodes(d3.values(nodes))
         .links(links)
         .size([width, height])
-        .linkDistance(60)
+        .linkDistance(120)
         .charge(-300)
         .on("tick", tick)
         .start();
