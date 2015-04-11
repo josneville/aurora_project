@@ -36,53 +36,58 @@ h2, p{
   stroke-width: 1.5px;
 }
 
-
-.link.purchase {
-  stroke: #2ecc71;
-}
-
-.link.refund {
-  stroke: #3498db;
-}
-
-.link.personalLoan {
-  stroke: #9b59b6;
-}
-
-.link.personalLoanPayment {
-  stroke: #f1c40f;
-}
-
-.link.businessLoan {
-  stroke: #e74c3c;
-}
-
-.link.businessLoanPayment {
-  stroke: #1abc9c;
-}
-
 circle {
   fill: #2c3e50;
   stroke: #2c3e50;
   stroke-width: 1.5px;
 }
 
-circle.bank {
-  fill: #7f8c8d;
-  stroke: #7f8c8d;
-  stroke-width: 1.5px;
+.purchase {
+  color: #16a085;
+  stroke: #16a085;
 }
 
-circle.person {
+.refund {
+  color: #27ae60;
+  stroke: #27ae60;
+}
+
+.personalLoan {
+  color: #2980b9;
+  stroke: #2980b9;
+}
+
+.personalLoanPayment {
+  color: #f39c12;
+  stroke: #f39c12;
+}
+
+.businessLoan {
+  color: #d35400;
+  stroke: #d35400;
+}
+
+.businessLoanPayment {
+  color: #c0392b;
+  stroke: #c0392b;
+}
+
+.bank {
+  fill: #8e44ad;
+  color: #8e44ad;
+  stroke: #8e44ad;
+}
+
+.person {
   fill: #2c3e50;
+  color: #2c3e50;
   stroke: #2c3e50;
-  stroke-width: 1.5px;
 }
 
-circle.store {
-  fill: #ecf0f1;
-  stroke: #ecf0f1;
-  stroke-width: 1.5px;
+.store {
+  fill: #7f8c8d;
+  color: #7f8c8d;
+  stroke: #7f8c8d;
 }
 
 text {

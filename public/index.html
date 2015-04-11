@@ -7,23 +7,23 @@
   </head>
   <body ng-controller="main-controller">
     <div id="legend">
-      <p style="color: #2c3e50">Person</p>
-      <p style="color: #ecf0f1">Store</p>
-      <p style="color: #7f8c8d">Bank</p>
-      <p style="color: #2ecc71">Purchase</p>
-      <p style="color: #3498db">Refund</p>
-      <p style="color: #9b59b6">Personal Loan</p>
-      <p style="color: #f1c40f">Personal Loan Payment</p>
-      <p style="color: #e74c3c">Business Loan</p>
-      <p style="color: #1abc9c">Business Loan Payment</p>
+      <p class="person">Person</p>
+      <p class="store">Store</p>
+      <p class="bank">Bank</p>
+      <p class="purchase">Purchase</p>
+      <p class="refund">Refund</p>
+      <p class="personalLoan">Personal Loan</p>
+      <p class="personalLoanPayment">Personal Loan Payment</p>
+      <p class="businessLoan">Business Loan</p>
+      <p class="businessLoanPayment">Business Loan Payment</p>
     </div>
     <div id="info">
-      <p style="color: #2c3e50">{{from}}</p>
-      <p style="color: #ecf0f1">{{to}}</p>
-      <p style="color: #7f8c8d">{{amount}}</p>
-      <p style="color: #3498db">{{name}}</p>
-      <p style="color: #2ecc71">{{worth}}</p>
-      <p style="color: #9b59b6">{{type}} </p>
+      <p ng-class="infoClass">{{from}}</p>
+      <p ng-class="infoClass">{{to}}</p>
+      <p ng-class="infoClass">{{amount}}</p>
+      <p ng-class="infoClass">{{name}}</p>
+      <p ng-class="infoClass">{{worth}}</p>
+      <p ng-class="infoClass">{{type}} </p>
     </div>
     <script src="/js/jquery.min.js"></script>
     <script src="/js/angular.min.js"></script>

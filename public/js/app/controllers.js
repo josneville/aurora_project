@@ -12,17 +12,19 @@ app.controller("main-controller", function($scope, $compile, socket){
     $scope.from = "From: " + s;
     $scope.to = "To: " + t;
     $scope.amount = "Amount: " + a;
-    $scope.type = "Type: " + ty;
+    $scope.type = "Type: " + ty.charAt(0).toUpperCase() + ty.slice(1);;
     $scope.worth = "";
     $scope.name = "";
+    $scope.infoClass = ty;
   };
   $scope.updateNodeInfo = function (n, w, ty){
     $scope.from = "";
     $scope.to = "";
     $scope.amount = "";
-    $scope.type = "Type: " + ty;
+    $scope.type = "Type: " + ty.charAt(0).toUpperCase() + ty.slice(1);;
     $scope.worth = "Worth: " + w;
     $scope.name = "Name: " + n;
+    $scope.infoClass = ty;
   };
   $scope.renderGraph = function(){
     var links = $scope.links;
