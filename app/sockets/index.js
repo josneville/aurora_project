@@ -7,7 +7,7 @@ module.exports = function(io){
         Agent.getAllSingle(function(err, rNodes){
           nodes = [];
           for (var i = 0; i < rNodes.length; i++){
-            nodes.push({name: rNodes[i].n._data.data.name, agentType: rNodes[i].n._data.data.agentType, worth: rNodes[i].n._data.data.amount});
+            nodes.push({name: rNodes[i].n._data.data.name, agentType: rNodes[i].n._data.data.agentType, worth: rNodes[i].n._data.data.worth});
           }
           Agent.getAllConnected(function(err, rLinks){
             links = [];
@@ -33,7 +33,7 @@ module.exports = function(io){
       Agent.getAllSingle(function(err, rNodes){
         nodes = [];
         for (var i = 0; i < rNodes.length; i++){
-          nodes.push({name: rNodes[i].n._data.data.name, worth: rNodes[i].n._data.data.worth});
+          nodes.push({name: rNodes[i].n._data.data.name, agentType: rNodes[i].n._data.data.agentType, worth: rNodes[i].n._data.data.worth});
         }
         Agent.getAllConnected(function(err, rLinks){
           links = [];

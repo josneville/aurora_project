@@ -1,6 +1,6 @@
 var app = angular.module("aurora-controllers", []);
 
-app.controller("main-controller", function($scope, socket){
+app.controller("main-controller", function($scope, $compile, socket){
   $scope.nodes = [];
   $scope.links = [];
   socket.on('data', function(data){
@@ -8,6 +8,22 @@ app.controller("main-controller", function($scope, socket){
     $scope.links = data.links;
     $scope.renderGraph();
   });
+  $scope.updateRelInfo = function (s, t, ty, a){
+    $scope.from = "From: " + s;
+    $scope.to = "To: " + t;
+    $scope.amount = "Amount: " + a;
+    $scope.type = "Type: " + ty;
+    $scope.worth = "";
+    $scope.name = "";
+  };
+  $scope.updateNodeInfo = function (n, w, ty){
+    $scope.from = "";
+    $scope.to = "";
+    $scope.amount = "";
+    $scope.type = "Type: " + ty;
+    $scope.worth = "Worth: " + w;
+    $scope.name = "Name: " + n;
+  };
   $scope.renderGraph = function(){
     var links = $scope.links;
     var nodes = $scope.nodes;
@@ -15,7 +31,6 @@ app.controller("main-controller", function($scope, socket){
       link.source = nodes[link.source] || (nodes[link.source] = {name: link.source, agentType: link.sa, worth: link.sw});
       link.target = nodes[link.target] || (nodes[link.target] = {name: link.target, agentType: link.ta, worth: link.tw});
     });
-
     var width = window.innerWidth,
         height = window.innerHeight;
 
@@ -30,6 +45,7 @@ app.controller("main-controller", function($scope, socket){
     d3.select("svg").remove();
     var svg = d3.select("body")
         .append("svg")
+        .attr("id", "mainSVG")
         .attr("width", width)
         .attr("height", height);
 
@@ -51,12 +67,14 @@ app.controller("main-controller", function($scope, socket){
         .data(force.links())
         .enter().append("path")
         .attr("class", function(d) { return "link " + d.type; })
+        .attr("ng-mouseover", function(d){ return "updateRelInfo('"+d.source.name+"', '"+d.target.name+"', '"+d.type+"', "+d.amount+")"})
         .attr("marker-end", function(d) { return "url(#" + d.type + ")"; });
 
     var circle = svg.append("g").selectAll("circle")
         .data(force.nodes())
         .enter().append("circle")
         .attr("class", function(d) { return d.agentType; })
+        .attr("ng-mouseover", function(d){ return "updateNodeInfo('"+d.name+"', "+d.worth+", '"+d.agentType+"')"})
         .attr("r", 8)
         .call(force.drag);
 
@@ -66,6 +84,8 @@ app.controller("main-controller", function($scope, socket){
         .attr("x", 8)
         .attr("y", ".75em")
         .text(function(d) { return d.name; });
+
+    $compile(angular.element("svg"))($scope);
 
     // Use elliptical arc path segments to doubly-encode directionality.
     function tick() {
