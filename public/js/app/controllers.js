@@ -41,8 +41,8 @@ app.controller("main-controller", function($scope, socket){
         .attr("viewBox", "0 -5 10 10")
         .attr("refX", 15)
         .attr("refY", -1.5)
-        .attr("markerWidth", 12)
-        .attr("markerHeight", 12)
+        .attr("markerWidth", 6)
+        .attr("markerHeight", 6)
         .attr("orient", "auto")
         .append("path")
         .attr("d", "M0,-5L10,0L0,5");
@@ -56,7 +56,7 @@ app.controller("main-controller", function($scope, socket){
     var circle = svg.append("g").selectAll("circle")
         .data(force.nodes())
       .enter().append("circle")
-        .attr("r", 15)
+        .attr("r", 8)
         .call(force.drag);
 
     var text = svg.append("g").selectAll("text")
